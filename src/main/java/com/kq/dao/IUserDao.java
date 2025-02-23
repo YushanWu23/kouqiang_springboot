@@ -11,6 +11,4 @@ public interface IUserDao extends JpaRepository<User,String> {
     User findUserByUserId(String id);
     User findUserByUserIdAndPassword(String userId,String password);
     long countByUserId(String userId);//查看用户所在行数
-    @Transactional
-    int updatePasswordByUserId(String password, String userId);
 }

@@ -1,18 +1,21 @@
 package com.kq.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
-public class note {//记录
+public class Reservation {//预约
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer noteId;
+    private Integer reservationId;
     @Column(columnDefinition = "mediumtext")
-    private String noteExplain;
+    private String reservationExplain;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId",nullable = false,referencedColumnName = "userId")
     private User user;
+
 }

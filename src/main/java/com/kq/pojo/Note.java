@@ -5,12 +5,12 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Data
-public class feedback {//反馈
+public class Note {//记录
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer feedbackId;
+    private Integer noteId;
     @Column(columnDefinition = "mediumtext")
-    private String feedbackExplain;
+    private String noteExplain;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId",nullable = false,referencedColumnName = "userId")

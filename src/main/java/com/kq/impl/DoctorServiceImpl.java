@@ -9,7 +9,7 @@ import java.util.*;
 
 @Component
 public class DoctorServiceImpl implements IDoctorService {
-    @Resource
+    /*@Resource
     IDoctorDao iDoctorDao;
     @Override
     public Doctor getByDoctorId(String doctorId){
@@ -45,5 +45,5 @@ public class DoctorServiceImpl implements IDoctorService {
     public int getDoctorInfo(String doctorId) {
         long count = iDoctorDao.countByDoctorId(doctorId);
         return (int) count;
-    }
+    }*/
 }

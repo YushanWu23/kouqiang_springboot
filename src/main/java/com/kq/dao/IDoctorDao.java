@@ -9,11 +9,11 @@ import java.util.List;
 
 @Repository
 public interface IDoctorDao extends JpaRepository<Doctor,Integer> {
-    List<Doctor> findDoctorsByDoctorNameContaining(String name);
+   /* List<Doctor> findDoctorsByDoctorNameContaining(String name);
     List<Doctor> findDoctorsByOrderTypeId(int orderTypeId);
 
     @Transactional
     Doctor findDoctorByDoctorId(String id);
     Doctor findDoctorByDoctorIdAndPassword(String doctorId,String password);
-    long countByDoctorId(String doctorId);
+    long countByDoctorId(String doctorId);*/
 }

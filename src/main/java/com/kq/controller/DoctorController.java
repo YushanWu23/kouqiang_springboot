@@ -10,7 +10,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/doctor")
 public class DoctorController {
-    @Resource
+    /*@Resource
     IDoctorService iDoctorService;
     @GetMapping("/getDoctorByDoctorId")
     public Doctor getByDoctorId(@RequestParam String doctorId){
@@ -27,6 +27,6 @@ public class DoctorController {
     @GetMapping("/getByOrderTypeId")
     List<Doctor> getByOrderTypeId(@RequestParam int orderTypeId){
         return iDoctorService.getByOrderTypeId(orderTypeId);
-    }
+    }*/
 
 }

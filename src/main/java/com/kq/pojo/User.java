@@ -34,6 +34,31 @@ public class User {
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL)
     private List<Orders> orders;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)//级联删除
+    private List<Feedback> feedbacks;//反馈
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)//级联删除
+    private List<Note> notes;//记录
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    private List<Reservation> reservations;//预约
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "user",
+            orphanRemoval = true
+    )
+    private List<Bookmark> bookmarks;//收藏夹
 
     public void addCarts(Cart cart){
         this.cart.add(cart);
@@ -53,6 +78,18 @@ public class User {
         if (deliveryAddress != null) {
             this.deliveryAddresses.remove(deliveryAddress);
             deliveryAddress.setUser(null);
+        }
+    }
+    public void removeFeedback(Feedback feedback) {
+        if (feedback != null) {
+            this.feedbacks.remove(feedback);
+            feedback.setUser(null);
+        }
+    }
+    public void removeNote(Note note) {
+        if (note != null) {
+            this.notes.remove(note);
+            note.setUser(null);
         }
     }
     public void removeCarts(Cart cart){

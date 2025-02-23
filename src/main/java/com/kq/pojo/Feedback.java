@@ -1,17 +1,18 @@
 package com.kq.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-public class reservation {//预约
+import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+@Entity
+@Data
+public class Feedback {//反馈
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reservationId;
+    private Integer feedbackId;
     @Column(columnDefinition = "mediumtext")
     private String feedbackExplain;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId",nullable = false,referencedColumnName = "userId")
     private User user;
-
 }

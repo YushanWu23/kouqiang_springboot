@@ -26,8 +26,14 @@ public class UserController {//登录注册忘记密码，查看个人信息（�
     User getUserInfo(@RequestParam String userId){
         return iUserService.getUserInfo(userId);
     }
-    @PostMapping("/passwordForget")//还需调整，加入验证
-    boolean passwordForget(@RequestParam String userId, @RequestParam String newPassword){
+
+    @PostMapping("/passwordForget")//还需调整，加入验证      //忘记密码和修改密码共用
+    int passwordForget(@RequestParam String userId, @RequestParam String newPassword){
         return iUserService.passwordForget(userId,newPassword);
+    }
+
+    @PostMapping("/updateUserInfo")//更改用户信息
+    int updateUserInfo (@RequestParam String userId,@RequestParam String userName,@RequestParam int userSex){
+        return iUserService.updateUserInfo (userId,userName,userSex);
     }
 }
