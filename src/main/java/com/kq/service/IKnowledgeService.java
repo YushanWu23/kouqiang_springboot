@@ -9,6 +9,6 @@ import java.util.List;
 public interface IKnowledgeService {
     List<Knowledge> getByKnowledgeTitleContaining(String knowledgeTitle);
     List<Knowledge> getAll();
-    Knowledge getByKnowledgeId(String knowledgeId);
-    int getKnowledgeExistence(String knowledgeId);
+    Knowledge getByKnowledgeId(int knowledgeId);
+    int getKnowledgeExistence(int knowledgeId);
 }

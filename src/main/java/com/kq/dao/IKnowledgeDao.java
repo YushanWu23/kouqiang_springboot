@@ -13,7 +13,7 @@ public interface IKnowledgeDao extends JpaRepository<Knowledge,Integer> {
     List<Knowledge> findKnowledgesByKnowledgeTitleContaining(String knowledgeTitle);
 
     @Transactional
-    Knowledge findKnowledgeByKnowledgeId(String knowledgeId);
+    Knowledge findKnowledgeByKnowledgeId(int knowledgeId);
 
-    long countByKnowledgeId(String knowledgeId);
+    long countByKnowledgeId(int knowledgeId);
 }

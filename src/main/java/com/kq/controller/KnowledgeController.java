@@ -14,7 +14,7 @@ public class KnowledgeController {//科普知识
     @Resource
     IKnowledgeService iKnowledgeService;
     @GetMapping("/getKnowledgeByKnowledgeId")
-    public Knowledge getByKnowledgeId(@RequestParam String knowledgeId){
+    public Knowledge getByKnowledgeId(@RequestParam int knowledgeId){
         return iKnowledgeService.getByKnowledgeId(knowledgeId);
     }
     @GetMapping("/getByKnowledgeTitleContaining/{knowledgeTitle}")
@@ -26,7 +26,7 @@ public class KnowledgeController {//科普知识
         return iKnowledgeService.getAll();
     }
     @PostMapping("/getKnowledgeExistence")//查看该知识是否存在
-    int getKnowledgeExistence(@RequestParam String knowledgeId){
+    int getKnowledgeExistence(@RequestParam int knowledgeId){
         return iKnowledgeService.getKnowledgeExistence(knowledgeId);
     }
 }

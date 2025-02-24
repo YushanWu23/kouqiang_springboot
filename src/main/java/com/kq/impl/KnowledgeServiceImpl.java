@@ -13,7 +13,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService {
     @Resource
     IKnowledgeDao iKnowledgeDao;
     @Override
-    public Knowledge getByKnowledgeId(String knowledgeId){
+    public Knowledge getByKnowledgeId(int knowledgeId){
         return iKnowledgeDao.findKnowledgeByKnowledgeId(knowledgeId);
     }
     @Override
@@ -25,7 +25,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService {
         return iKnowledgeDao.findAll();
     }
     @Override//根据编号查询表返回的行数
-    public int getKnowledgeExistence(String knowledgeId) {
+    public int getKnowledgeExistence(int knowledgeId) {
         long count = iKnowledgeDao.countByKnowledgeId(knowledgeId);
         return (int) count;
     }
