@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/bookmark")
-public class BookmarkController {
+public class BookmarkController {//收藏夹
     @Resource
     IBookmarkService iBookmarkService;
     @PostMapping("/getBookmarkAll")//显示该收藏夹内容

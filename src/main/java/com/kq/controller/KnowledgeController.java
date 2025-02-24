@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/")
-public class KnowledgeController {
+public class KnowledgeController {//科普知识
     @Resource
     IKnowledgeService iKnowledgeService;
     @GetMapping("/getKnowledgeByKnowledgeId")
