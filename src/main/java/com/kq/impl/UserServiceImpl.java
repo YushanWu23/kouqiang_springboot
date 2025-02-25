@@ -41,8 +41,12 @@ public class UserServiceImpl implements IUserService {
         if (!emailService.sendEmail(userId, emailSubject, emailText)) {
             throw new RuntimeException("邮件发送失败");
         }
+        System.out.println("Sending email to: " + userId);
+        System.out.println("Email subject: " + emailSubject);
+        System.out.println("Email text: " + emailText);
         // 存储验证码到 Redis 或数据库，设置过期时间
         redisTemplate.opsForValue().set("email:code:" + userId, code, 5, TimeUnit.MINUTES);
+        System.out.println("Email code stored in Redis: " + code);
         return 1;
     }
     @Override

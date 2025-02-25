@@ -24,8 +24,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         ArrayList<String> pathCan = new ArrayList<>();
         pathCan.add("/user/login");
         pathCan.add("/user/register");
-        pathCan.add("/business/getAll");
-        pathCan.add("/business/getByOrderTypeId");
+        pathCan.add("/user/sendRegisterEmailCode");
+        pathCan.add("/user/passwordForget");
+        pathCan.add("/user/sendForgetPasswordEmailCode");
+        /*pathCan.add("/business/getAll");
+        pathCan.add("/business/getByOrderTypeId");*/
         pathCan.add("/orders/getOrdersByOrdersId");
         pathCan.add("/orders/createOrders");
         pathCan.add("/orders/getOrdersByUserId");
