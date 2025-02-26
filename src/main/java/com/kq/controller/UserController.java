@@ -1,10 +1,13 @@
 package com.kq.controller;
 
 import com.kq.pojo.User;
+import com.kq.SpecialService.FastApiService;
 import com.kq.service.IUserService;
 import com.kq.util.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -13,7 +16,20 @@ public class UserController {//登录注册忘记密码，查看个人信息（�
     @Resource
     private IUserService iUserService;
     @Resource
+    private FastApiService fastApiService;
+    @Resource
     private JwtTokenUtil jwtTokenUtil;
+
+    @PostMapping("/callModel")
+    public String callModel(@RequestBody Map<String, Object> requestBody) {
+        String prompt = (String) requestBody.get("prompt");
+        Integer max_length = (Integer) requestBody.get("max_length");
+        Double top_p = (Double) requestBody.get("top_p");
+        Double temperature = (Double) requestBody.get("temperature");
+        System.out.println(prompt);
+        return fastApiService.callModel(prompt, max_length, top_p, temperature);
+    }
+
     @PostMapping("/login")
     String login(@RequestParam String userId, @RequestParam String pwd){
         return iUserService.login(userId,pwd)!=null? jwtTokenUtil.generateToken(userId) :null;

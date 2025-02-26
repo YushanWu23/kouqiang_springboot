@@ -22,6 +22,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         //获取请求的Servlet路径
         String path = request.getServletPath();
         ArrayList<String> pathCan = new ArrayList<>();
+        pathCan.add("/user/callModel");
         pathCan.add("/user/login");
         pathCan.add("/user/register");
         pathCan.add("/user/sendRegisterEmailCode");
