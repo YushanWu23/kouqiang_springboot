@@ -18,8 +18,4 @@ public class Food {//商品
     private String foodImg;
     private Double foodPrice;
     private String remarks;
-   /* @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="businessId",nullable = false,referencedColumnName = "businessId")
-    private Doctor doctor;*/
 }
