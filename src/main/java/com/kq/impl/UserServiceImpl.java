@@ -2,12 +2,11 @@ package com.kq.impl;
 
 import com.kq.dao.IUserDao;
 import com.kq.pojo.User;
-import com.kq.service.EmailService;
+import com.kq.SpecialService.EmailService;
 import com.kq.service.IUserService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import java.util.concurrent.TimeUnit;
 import java.util.Random;
