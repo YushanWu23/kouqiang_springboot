@@ -13,7 +13,7 @@ import java.util.List;
 public class BookmarkController {//收藏夹
     @Resource
     IBookmarkService iBookmarkService;
-    @PostMapping("/getBookmarkAll")//显示该收藏夹内容
+    @GetMapping("/getBookmarkAll")//显示该收藏夹内容
     List<Bookmark> getBookmarkAll(@RequestParam String userId){
         return iBookmarkService.getBookmarkAll(userId);
     }
@@ -24,5 +24,9 @@ public class BookmarkController {//收藏夹
     @PostMapping("/deleteBookmark")
     int deleteBookmark(@RequestParam String userId,@RequestParam int knowledgeId){
         return iBookmarkService.deleteBookmark(userId,knowledgeId);
+    }
+    @GetMapping("/isBookmarked")
+    boolean isBookmarked(@RequestParam String userId,@RequestParam int knowledgeId){
+        return  iBookmarkService.isBookmarked(userId,knowledgeId);
     }
 }

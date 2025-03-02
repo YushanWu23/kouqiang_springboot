@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/")
+@RequestMapping("/knowledge")
 public class KnowledgeController {//科普知识
     @Resource
     IKnowledgeService iKnowledgeService;
@@ -17,7 +17,7 @@ public class KnowledgeController {//科普知识
     public Knowledge getByKnowledgeId(@RequestParam int knowledgeId){
         return iKnowledgeService.getByKnowledgeId(knowledgeId);
     }
-    @GetMapping("/getByKnowledgeTitleContaining/{knowledgeTitle}")
+    @GetMapping("/getByKnowledgeTitleContaining")
     public List<Knowledge> getByKnowledgeTitleContaining(@RequestParam String knowledgeTitle){
         return iKnowledgeService.getByKnowledgeTitleContaining(knowledgeTitle);
     }

@@ -55,5 +55,15 @@ public class BookmarkServiceImpl implements IBookmarkService {
         iBookmarkDao.delete(bookmark);
         return 1;
     }
+    @Override
+    public boolean isBookmarked( String userId, int knowledgeId){
+        List<Bookmark> bookmarks = iBookmarkDao.findBookmarksByUserUserId(userId);
+        for (Bookmark bookmark : bookmarks) {
+            if (bookmark.getKnowledge().getKnowledgeId() == knowledgeId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

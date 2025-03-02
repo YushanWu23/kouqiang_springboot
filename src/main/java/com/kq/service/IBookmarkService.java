@@ -9,5 +9,6 @@ import java.util.List;
 public interface IBookmarkService {
     List<Bookmark> getBookmarkAll(String userId);
     int insertKnowledgeIntoBookmark(String userId,int knowledgeId);
-    int deleteBookmark(String userId, int foodId);
+    int deleteBookmark(String userId, int knowledgeId);
+    boolean isBookmarked( String userId, int knowledgeId);
 }
