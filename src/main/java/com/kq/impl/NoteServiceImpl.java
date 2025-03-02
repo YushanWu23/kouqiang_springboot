@@ -7,6 +7,7 @@ import com.kq.pojo.Note;
 import com.kq.pojo.User;
 import com.kq.service.INoteService;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class NoteServiceImpl implements INoteService {
     IUserDao iUserDao;
     @Override
     public List<Note> getNoteByUserId(String userId){
-        return iNoteDao.findNotesByUserUserId(userId);
+        Sort sort = Sort.by(Sort.Direction.DESC, "noteId");//降序
+        return iNoteDao.findNotesByUserUserId(userId,sort);
     }
     @Override
     public int saveNote( String noteExplain,String userId){
