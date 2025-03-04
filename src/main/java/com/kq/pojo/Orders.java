@@ -21,12 +21,12 @@ public class Orders {
     @JoinColumn(name="userId",referencedColumnName = "userId",nullable = false)
     private User user;
     /*@JoinColumn(
-            name = "foodId",
-            referencedColumnName = "foodId",
+            name = "productId",
+            referencedColumnName = "productId",
             nullable = false
     )
     @ManyToOne
-    private Food food;*/
+    private Product product;*/
     private String orderDate;
     private Double orderTotal;
     @ManyToOne

@@ -15,8 +15,8 @@ public class OrderDetailet {
     @JoinColumn(name="orderId",referencedColumnName = "orderId")
     private Orders orders;
     @ManyToOne
-    @JoinColumn(name="foodId",referencedColumnName = "foodId")
-    private Food food;
+    @JoinColumn(name="productId",referencedColumnName = "productId")
+    private Product product;
     private int quantity;
 
 }

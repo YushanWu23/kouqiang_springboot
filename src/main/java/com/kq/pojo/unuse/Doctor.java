@@ -26,7 +26,7 @@ public class Doctor {
     private String remarks;
     @JsonIgnore
     @OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "business")
-    private List<Food> food = new ArrayList<>();
+    private List<Product> product = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy = "business",
             cascade = CascadeType.ALL,

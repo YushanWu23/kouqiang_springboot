@@ -16,16 +16,16 @@ public class CartController {
     List<Cart> getCartAll(@RequestParam String userId){
         return iCartService.getCartAll(userId);
     }
-    @PostMapping("/insertFoodIntoCart")//添加商品到购物车
-    int insertFoodIntoCart(@RequestParam String userId,@RequestParam int foodId){
-        return iCartService.insertFoodIntoCart(userId,foodId);
+    @PostMapping("/insertProductIntoCart")//添加商品到购物车
+    int insertProductIntoCart(@RequestParam String userId,@RequestParam int productId){
+        return iCartService.insertProductIntoCart(userId,productId);
     }
     @PostMapping("/deleteCart")
-    int deleteCart(@RequestParam String userId,@RequestParam int foodId){
-        return iCartService.deleteCart(userId,foodId);
+    int deleteCart(@RequestParam String userId,@RequestParam int productId){
+        return iCartService.deleteCart(userId,productId);
     }
-    @PostMapping("/updateCart")//该功能已经融入到insertFoodIntoCart中
-    int updateCart(@RequestParam String userId,@RequestParam int foodId,@RequestParam int quantity){
-        return iCartService.updateCart(userId,foodId,quantity);
+    @PostMapping("/updateCart")//该功能已经融入到insertProductIntoCart中
+    int updateCart(@RequestParam String userId,@RequestParam int productId,@RequestParam int quantity){
+        return iCartService.updateCart(userId,productId,quantity);
     }
 }

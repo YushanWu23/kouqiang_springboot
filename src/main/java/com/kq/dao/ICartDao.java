@@ -9,5 +9,5 @@ import java.util.List;
 public interface ICartDao extends JpaRepository<Cart,Integer> {
     List<Cart> findCartsByUserUserId(String userId);
 
-    Cart findCartsByUserUserIdAndFoodFoodId(String userId,int foodId);
+    Cart findCartsByUserUserIdAndProductProductId(String userId,int productId);
 }

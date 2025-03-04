@@ -17,15 +17,15 @@ public class CartServiceImpl implements ICartService {
     @Resource
     IUserDao iUserDao;
     @Resource
-    IFoodDao iFoodDao;
+    IProductDao iProductDao;
     @Override
     @Transactional
     public List<Cart> getCartAll(String userId){
         return iCartDao.findCartsByUserUserId(userId);
     }
     @Override
-    public int insertFoodIntoCart(String userId, int foodId){
-        Cart existingCart = iCartDao.findCartsByUserUserIdAndFoodFoodId(userId, foodId);
+    public int insertProductIntoCart(String userId, int productId){
+        Cart existingCart = iCartDao.findCartsByUserUserIdAndProductProductId(userId, productId);
         if (existingCart != null) {
             // 如果购物车中已存在该食品，则更新数量
             existingCart.setQuantity(existingCart.getQuantity() + 1);
@@ -33,12 +33,12 @@ public class CartServiceImpl implements ICartService {
         } else {
             Cart cart = new Cart();
             cart.setQuantity(1);// // 设置商品数量为1
-            Food food = iFoodDao.findById(foodId).orElse(null);
+            Product product = iProductDao.findById(productId).orElse(null);
             // 处理商品不存在的情况，例如抛出异常或返回错误码
-            if (food == null) {
+            if (product == null) {
                 return -1;
             }
-            cart.setFood(food);
+            cart.setProduct(product);
             User user = iUserDao.findById(userId).orElse(null);
             if (user == null) {
                 return -1;
@@ -49,14 +49,14 @@ public class CartServiceImpl implements ICartService {
         return 1;// 添加商品到购物车成功
     }
     @Override
-    public int deleteCart( String userId, int foodId){
-        Cart cart = iCartDao.findCartsByUserUserIdAndFoodFoodId(userId,foodId);
+    public int deleteCart( String userId, int productId){
+        Cart cart = iCartDao.findCartsByUserUserIdAndProductProductId(userId,productId);
         iCartDao.delete(cart);
         return 1;
     }
     @Override
-    public int updateCart( String userId, int foodId, int quantity){
-        Cart cart = iCartDao.findCartsByUserUserIdAndFoodFoodId(userId,foodId);
+    public int updateCart( String userId, int productId, int quantity){
+        Cart cart = iCartDao.findCartsByUserUserIdAndProductProductId(userId,productId);
         cart.setQuantity(quantity);
         iCartDao.save(cart);
         return 1;

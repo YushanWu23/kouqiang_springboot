@@ -1,7 +1,7 @@
 package com.kq.impl;
 import com.kq.dao.*;
 import com.kq.dao.ICartDao;
-import com.kq.dao.IFoodDao;
+import com.kq.dao.IProductDao;
 import com.kq.dao.IOrdersDao;
 import com.kq.pojo.*;
 import com.kq.service.IOrdersService;
@@ -19,7 +19,7 @@ public class OrdersServiceImpl implements IOrdersService {
     @Resource
     IUserDao iUserDao;
     @Resource
-    IFoodDao iFoodDao;
+    IProductDao iProductDao;
     @Resource
     IDeliveryAddressDao iDeliveryAddressDao;
     @Resource
@@ -42,7 +42,7 @@ public class OrdersServiceImpl implements IOrdersService {
         List<Cart> carts = iCartDao.findCartsByUserUserId(userId);
         for (Cart cart: carts){
             OrderDetailet orderDetailet = new OrderDetailet();
-            orderDetailet.setFood(cart.getFood());
+            orderDetailet.setProduct(cart.getProduct());
             orderDetailet.setQuantity(cart.getQuantity());
             orders.addOrderDetail(orderDetailet);
             user.removeCarts(cart);

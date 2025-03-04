@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface ICartService {
     List<Cart> getCartAll(String userId);
-    int insertFoodIntoCart(String userId,int foodId);
-    int deleteCart(String userId, int foodId);
-    int updateCart(String userId, int foodId, int quantity);
+    int insertProductIntoCart(String userId,int productId);
+    int deleteCart(String userId, int productId);
+    int updateCart(String userId, int productId, int quantity);
 }

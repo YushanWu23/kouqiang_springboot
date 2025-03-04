@@ -3,7 +3,7 @@ package com.elm;
 
 import com.elm.dao.IBusinessDao;
 import com.elm.pojo.Business;
-import com.elm.pojo.Food;
+import com.elm.pojo.Product;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,11 @@ public class DaoTest {
         bus.setBusinessAddress("地址2");
         bus.setBusinessExplain("js2");
         bus.setDeliveryPrice(10.0);
-        Food food = new Food();
-        food.setFoodId(1);
-        food.setFoodName("鸡腿堡");
-        food.setFoodPrice(15.0);
-        bus.getFood().add(food);
+        Product product = new Product();
+        product.setProductId(1);
+        product.setProductName("鸡腿堡");
+        product.setProductPrice(15.0);
+        bus.getProduct().add(product);
         busDao.save(bus);
     }
     @Test
