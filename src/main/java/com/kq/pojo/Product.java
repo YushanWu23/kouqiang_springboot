@@ -10,7 +10,6 @@ public class Product {//商品
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
     private String productName;
-    @Column(columnDefinition = "mediumtext")
     private String productImg;
     private Double productPrice;
 }
