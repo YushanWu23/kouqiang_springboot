@@ -11,11 +11,11 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartId;
     @ManyToOne
-    @JoinColumn(name = "foodId",
-            referencedColumnName = "foodId",
+    @JoinColumn(name = "productId",
+            referencedColumnName = "productId",
             nullable = false
     )
-    private Food food;
+    private Product product;
     /*@ManyToOne
     @JoinColumn(name = "businessId",
             referencedColumnName = "businessId",
