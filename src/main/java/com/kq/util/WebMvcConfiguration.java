@@ -13,6 +13,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {//添加拦截器
         registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/**");//拦截所有的请求路径
+                .addPathPatterns("/**")//拦截所有的请求路径
+                .excludePathPatterns("/uploads/**"); // 排除静态资源路径
     }
 }
