@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface INoteDao extends JpaRepository<Note,Integer> {
-
     List<Note> findNotesByUserUserId(String userId, Sort sort);
     Note findNoteByNoteId(int noteId);
 }
