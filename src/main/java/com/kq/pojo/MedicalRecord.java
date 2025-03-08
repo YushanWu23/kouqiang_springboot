@@ -15,7 +15,6 @@ public class MedicalRecord {//病历
     private String visitTime;
     private String diagnosis; // 诊断结果
     private String treatmentPlan; // 治疗方案
-    private String prescription; // 处方
     @ElementCollection
     @CollectionTable(name = "medicalRecord_images", joinColumns = @JoinColumn(name = "medicalRecord_id"))
     @Column(name = "medicalRecord_url")
