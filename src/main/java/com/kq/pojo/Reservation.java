@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class Reservation {//预约
@@ -11,7 +13,7 @@ public class Reservation {//预约
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservationId;
     private String status;// 状态(待确认/已预约/已完成/取消)
-    private String bookTime;
+    private LocalDateTime bookTime = LocalDateTime.now();
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId",nullable = false,referencedColumnName = "userId")
