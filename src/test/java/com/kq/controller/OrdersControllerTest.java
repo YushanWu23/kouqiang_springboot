@@ -1,8 +1,10 @@
 package com.kq.controller;
-import com.kq.pojo.Orders;
+import com.kq.controller.forUser.OrdersController;
+import com.kq.pojo.forUser.Orders;
 import com.kq.pojo.*;
-import com.kq.pojo.unuse.Doctor;
-import com.kq.service.IOrdersService;
+import com.kq.pojo.Doctor;
+import com.kq.pojo.forUser.DeliveryAddress;
+import com.kq.service.forUser.IOrdersService;
 import com.kq.util.JwtTokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

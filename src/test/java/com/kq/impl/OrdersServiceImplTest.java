@@ -4,7 +4,8 @@ import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.kq.dao.*;
-import com.kq.dao.IOrdersDao;
+import com.kq.dao.forUser.IOrdersDao;
+import com.kq.impl.forUser.OrdersServiceImpl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
