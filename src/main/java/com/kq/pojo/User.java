@@ -1,6 +1,7 @@
 package com.kq.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kq.pojo.forUser.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -14,8 +15,6 @@ public class User {
     private String password;
     private String userName;
     private int userSex;
-    //@Column(columnDefinition = "mediumtext")
-    //private String userImg;
     private int delTag;
     @JsonIgnore
     @OneToMany(
@@ -49,8 +48,15 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private List<Reservation> reservations;//预约
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    private List<MedicalRecord> medicalRecords;//病历
 
     @JsonIgnore
     @OneToMany(
