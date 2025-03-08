@@ -24,7 +24,7 @@ public class NoteController {//记录
         return iNoteService.getNoteByNoteId(noteId);
     }
     @PostMapping("/saveNote")
-    int saveNote(@RequestParam String noteExplain, @RequestParam("files") MultipartFile[] files, @RequestParam String userId){
+    int saveNote(@RequestParam String noteExplain, @RequestParam(value = "files",required = false) MultipartFile[] files, @RequestParam String userId){
         return iNoteService.saveNote(noteExplain, files, userId);
     }
     @PostMapping("/updateNote")

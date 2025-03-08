@@ -23,7 +23,7 @@ public class FeedbackController {//反馈
         return iFeedbackService.getFeedbackByUserId(userId);
     }
     @PostMapping("/saveFeedback")
-    int saveFeedback(@RequestParam String feedbackExplain, @RequestParam("files") MultipartFile[] files, @RequestParam String userId){
+    int saveFeedback(@RequestParam String feedbackExplain, @RequestParam(value = "files",required = false) MultipartFile[] files, @RequestParam String userId){
         return iFeedbackService.saveFeedback(feedbackExplain, files, userId);
     }
     /*@PostMapping("/updateFeedback")
