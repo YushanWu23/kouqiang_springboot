@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class ScheduleController {
     @Resource
     IScheduleService iScheduleService;
-    @PostMapping
+    @PostMapping("/createSchedule")
     public Schedule createSchedule(@RequestBody String doctorId,@RequestBody LocalDateTime startTime,@RequestBody LocalDateTime endTime,@RequestBody int maxReservations) {
         return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
     }
