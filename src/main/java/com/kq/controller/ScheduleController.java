@@ -14,7 +14,15 @@ public class ScheduleController {
     @Resource
     IScheduleService iScheduleService;
     @PostMapping("/createSchedule")
-    public Schedule createSchedule(@RequestBody String doctorId,@RequestBody LocalDateTime startTime,@RequestBody LocalDateTime endTime,@RequestBody int maxReservations) {
+    public Schedule createSchedule(@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
         return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
+    }
+    @PostMapping("/createSchedule")
+    public Schedule updateSchedule(@RequestParam int scheduleId,@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
+        return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
+    }
+    @PostMapping("/createSchedule")
+    public int deleteSchedule(@RequestParam int scheduleId) {
+        return iScheduleService.deleteSchedule(scheduleId);
     }
 }
