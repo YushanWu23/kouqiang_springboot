@@ -13,10 +13,4 @@ public class Admin {
     private String adminId;
     @JsonIgnore
     private String password;
-    private String adminName;
-    private String adminAddress;
-    private String adminExplain;
-    //@Column(columnDefinition = "mediumtext")
-    //private String adminImg;
-
 }
