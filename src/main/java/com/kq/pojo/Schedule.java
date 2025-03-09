@@ -16,13 +16,16 @@ public class Schedule {//排班
     private Integer scheduleId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    @Column(nullable = false)
     private Integer maxReservations = 15; // 最大预约数
+    @Column(nullable = false)
     private Integer currentReservations = 0; // 当前预约数
-    private String status;
+    @Column(nullable = false)
+    private String status="Active";
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
-            mappedBy = "reservation",
+            mappedBy = "schedule",
             orphanRemoval = true
     )
     private List<Reservation> reservations;

@@ -3,6 +3,8 @@ package com.kq.dao;
 import com.kq.pojo.Schedule;
 import com.kq.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,4 +17,13 @@ public interface IScheduleDao extends JpaRepository<Schedule,Integer> {
     @Transactional
     Schedule findScheduleByScheduleId(int id);
     List<Schedule> findByDoctorDoctorIdAndStartTimeBetweenOrderByStartTimeAsc(String doctorId, LocalDateTime start, LocalDateTime end);
+    @Query("SELECT s FROM Schedule s WHERE " +
+            "s.doctor.doctorId = :doctorId AND " +
+            "(s.startTime < :endTime AND s.endTime > :startTime) AND " +
+            "(s.scheduleId != :excludeId OR :excludeId IS NULL)")
+    List<Schedule> findConflictingSchedules(@Param("doctorId") String doctorId,
+                                            @Param("startTime") LocalDateTime startTime,
+                                            @Param("endTime") LocalDateTime endTime,
+                                            @Param("excludeId") Integer excludeId);
 }
+
