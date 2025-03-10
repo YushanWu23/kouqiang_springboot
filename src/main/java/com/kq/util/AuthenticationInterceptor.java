@@ -23,6 +23,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String path = request.getServletPath();
         ArrayList<String> pathCan = new ArrayList<>();
         pathCan.add("/uploads/**");
+        pathCan.add("/ws/**");
+        pathCan.add("/consultation/**");
         pathCan.add("/user/callModel");
         pathCan.add("/user/login");
         pathCan.add("/user/register");
