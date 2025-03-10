@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,8 +13,11 @@ public class Consultation {//咨询记录
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer consultationId;
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String status;//请求中、进行中、已结束
+    private boolean userOnline;
+    private boolean doctorOnline;
     @ManyToOne
     @JoinColumn(
             name = "userId",
@@ -31,7 +35,7 @@ public class Consultation {//咨询记录
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
-            mappedBy = "chatMessage",
+            mappedBy = "consultation",
             orphanRemoval = true
     )
     private List<ChatMessage> chatMessages;
