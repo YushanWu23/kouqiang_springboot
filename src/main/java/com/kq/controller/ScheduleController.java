@@ -17,11 +17,11 @@ public class ScheduleController {
     public Schedule createSchedule(@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
         return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
     }
-    @PostMapping("/createSchedule")
+    @PostMapping("/updateSchedule")
     public Schedule updateSchedule(@RequestParam int scheduleId,@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
         return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
     }
-    @PostMapping("/createSchedule")
+    @PostMapping("/deleteSchedule")
     public int deleteSchedule(@RequestParam int scheduleId) {
         return iScheduleService.deleteSchedule(scheduleId);
     }
