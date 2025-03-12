@@ -21,6 +21,14 @@ public class AdminController {
     public Admin login(@RequestParam String adminId,@RequestParam String password) {
         return iAdminService.login(adminId, password);
     }
+    @PostMapping("/passwordForget")     //忘记密码和修改密码共用
+    int passwordForget(@RequestParam String adminId, @RequestParam String newPassword,@RequestParam String emailCode){
+        return iAdminService.passwordForget(adminId,newPassword,emailCode);
+    }
+    @PostMapping("/sendForgetPasswordEmailCode")
+    int sendForgetPasswordEmailCode(@RequestParam String adminId){
+        return iAdminService.sendForgetPasswordEmailCode(adminId);
+    }
     @GetMapping("/getAllMedicalRecord")//查看所有病历
     public List<MedicalRecord> getAllMedicalRecord (){
         return iAdminService.getAllMedicalRecord ();
