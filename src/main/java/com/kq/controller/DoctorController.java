@@ -20,7 +20,7 @@ public class DoctorController {
     IDoctorService iDoctorService;
     @Resource
     private JwtTokenUtil jwtTokenUtil;
-    @GetMapping("/getDoctorByDoctorId")
+    @GetMapping("/getDoctorInfo")
     public Doctor getByDoctorId(@RequestParam String doctorId){
         return iDoctorService.getByDoctorId(doctorId);
     }
