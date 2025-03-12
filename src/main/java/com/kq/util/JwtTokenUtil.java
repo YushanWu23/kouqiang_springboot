@@ -3,6 +3,7 @@ package com.kq.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -12,25 +13,13 @@ import java.util.Date;
 public class JwtTokenUtil {
     private static long ttl = 60 * 1000 * 60;//token有效时间1小时
     private SecretKey key = Jwts.SIG.HS256.key().build();//创建密钥，用于签发和验证token
-    public String generateToken(String userId) {//生成token
-        Date expiryDate = new Date(new Date().getTime() + ttl);//计算token的过期时间
-        String jws = null;
-        try {
-            jws = Jwts.builder()
-                    .header()
-                    .add("for","user")
-                    .and()
-
-                    .claim("userId",userId)
-                    .expiration(expiryDate)
-                    .issuedAt(new Date())
-
-                    .signWith(key)
-                    .compact();
-        }catch (JwtException ex){
-            ex.printStackTrace();
-        }
-        return jws;
+    public String generateToken(String userId) {
+        Date expiryDate = new Date(new Date().getTime() + ttl);
+        return Jwts.builder()
+                .claim("userId", userId)
+                .expiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public Claims getUsernameFromToken(String token) {//从token中获取用户信息
@@ -49,10 +38,10 @@ public class JwtTokenUtil {
     }
 
     public boolean validateToken(String token) {
-        try{
-            return !isTokenExpired(token);
-        }catch (Exception exception){
-            exception.printStackTrace();
+        try {
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
