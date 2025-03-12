@@ -1,47 +1,62 @@
+/*
 package com.kq.util;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Resource
     JwtTokenUtil jwtTokenUtil;
-    @Override//用于在请求到达Controller之前进行预处理。
+
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getMethod().equals("OPTIONS")) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return true;
+            return true; // OPTIONS 请求由 Spring Security 的 CORS 配置处理
         }
-        //获取请求的Servlet路径
+
+        // 获取请求的路径
         String path = request.getServletPath();
-        ArrayList<String> pathCan = new ArrayList<>();
-        pathCan.add("/uploads/**");
-        pathCan.add("/ws/**");
-        pathCan.add("/consultation/**");
-        pathCan.add("/user/callModel");
-        pathCan.add("/user/login");
-        pathCan.add("/user/register");
-        pathCan.add("/user/sendRegisterEmailCode");
-        pathCan.add("/user/passwordForget");
-        pathCan.add("/user/sendForgetPasswordEmailCode");
-        /*pathCan.add("/business/getAll");
-        pathCan.add("/business/getByOrderTypeId");*/
-        pathCan.add("/orders/getOrdersByOrdersId");
-        pathCan.add("/orders/createOrders");
-        pathCan.add("/orders/getOrdersByUserId");
-        pathCan.add("/orders/updateOrderState");
-        if (pathCan.contains(path)){
-            return true;
+
+        // 如果路径是允许匿名访问的路径，直接放行
+        List<String> anonymousPaths = Arrays.asList(
+                "/uploads/**",
+                "/ws/**",
+                "/consultation/**",
+                "/user/callModel",
+                "/user/login",
+                "/doctor/login",
+                "/admin/login",
+                "/user/register",
+                "/user/sendRegisterEmailCode",
+                "/user/passwordForget",
+                "/user/sendForgetPasswordEmailCode",
+                "/admin/passwordForget",
+                "/admin/sendForgetPasswordEmailCode",
+                "/doctor/passwordForget",
+                "/doctor/sendForgetPasswordEmailCode"
+        );
+
+        // 使用 AntPathMatcher 匹配路径
+        for (String allowedPath : anonymousPaths) {
+            if (pathMatcher.match(allowedPath, path)) {
+                return true;
+            }
         }
+
+        // 对其他路径进行 Token 验证
         String token = request.getHeader("Authorization");
-        boolean result = jwtTokenUtil.validateToken(token);//验证token的可效性
+        boolean result = jwtTokenUtil.validateToken(token); // 验证 Token 的有效性
         return result;
     }
 
@@ -55,4 +70,4 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
-}
+}*/
