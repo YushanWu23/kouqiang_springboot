@@ -5,6 +5,8 @@ import com.kq.SpecialService.FastApiService;
 import com.kq.service.IUserService;
 import com.kq.util.JwtTokenUtil;
 import jakarta.annotation.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,7 +21,16 @@ public class UserController {//登录注册忘记密码，查看个人信息（�
     private FastApiService fastApiService;
     @Resource
     private JwtTokenUtil jwtTokenUtil;
-
+    @GetMapping("/validateToken")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            if (jwtTokenUtil.validateToken(token)) {
+                return ResponseEntity.ok().build(); // Token 有效
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Token 无效
+    }
     @PostMapping("/callModel")
     public String callModel(@RequestBody Map<String, Object> requestBody) {
         String prompt = (String) requestBody.get("prompt");
