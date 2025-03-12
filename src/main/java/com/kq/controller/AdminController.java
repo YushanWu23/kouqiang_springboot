@@ -4,6 +4,7 @@ import com.kq.pojo.Admin;
 import com.kq.pojo.Doctor;
 import com.kq.pojo.MedicalRecord;
 import com.kq.service.IAdminService;
+import com.kq.util.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,9 +18,11 @@ import java.util.List;
 public class AdminController {
     @Resource
     private IAdminService iAdminService;
+    @Resource
+    private JwtTokenUtil jwtTokenUtil;
     @PostMapping("/login")
-    public Admin login(@RequestParam String adminId,@RequestParam String password) {
-        return iAdminService.login(adminId, password);
+    public String login(@RequestParam String adminId,@RequestParam String password) {
+        return iAdminService.login(adminId, password)!=null? jwtTokenUtil.generateToken(adminId) :null;
     }
     @PostMapping("/passwordForget")     //忘记密码和修改密码共用
     int passwordForget(@RequestParam String adminId, @RequestParam String newPassword,@RequestParam String emailCode){
