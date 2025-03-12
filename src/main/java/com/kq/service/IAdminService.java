@@ -13,6 +13,8 @@ import java.util.List;
 @Service
 public interface IAdminService {
     Admin login(String adminId,String password);
+    int passwordForget(String adminId, String newPassword, String emailCode);
+    int sendForgetPasswordEmailCode(String adminId);
     List<MedicalRecord> getAllMedicalRecord ();
     List<MedicalRecord> searchMedicalRecords (String doctorId, String userId, LocalDateTime date);
     List<Doctor> getAllDoctors ();
