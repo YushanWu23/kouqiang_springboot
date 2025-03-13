@@ -6,6 +6,8 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -15,12 +17,28 @@ public class ScheduleController {
     @Resource
     IScheduleService iScheduleService;
     @PostMapping("/createSchedule")
-    public Schedule createSchedule(@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
-        return iScheduleService.createSchedule(doctorId, startTime, endTime, maxReservations);
+    public Schedule createSchedule(@RequestParam String doctorId,
+                                   @RequestParam String startTime,
+                                   @RequestParam String endTime,
+                                   @RequestParam int maxReservations) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.of("Asia/Shanghai")); // 指定时区
+        LocalDateTime startTimeParsed = LocalDateTime.parse(startTime, formatter);
+        LocalDateTime endTimeParsed = LocalDateTime.parse(endTime, formatter);
+        return iScheduleService.createSchedule(doctorId, startTimeParsed, endTimeParsed, maxReservations);
     }
+
     @PostMapping("/updateSchedule")
-    public Schedule updateSchedule(@RequestParam int scheduleId,@RequestParam String doctorId,@RequestParam LocalDateTime startTime,@RequestParam LocalDateTime endTime,@RequestParam int maxReservations) {
-        return iScheduleService.updateSchedule(scheduleId, doctorId,startTime, endTime, maxReservations);
+    public Schedule updateSchedule(@RequestParam int scheduleId,
+                                   @RequestParam String doctorId,
+                                   @RequestParam String startTime,
+                                   @RequestParam String endTime,
+                                   @RequestParam int maxReservations) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(ZoneId.of("Asia/Shanghai")); // 指定时区
+        LocalDateTime startTimeParsed = LocalDateTime.parse(startTime, formatter);
+        LocalDateTime endTimeParsed = LocalDateTime.parse(endTime, formatter);
+        return iScheduleService.updateSchedule(scheduleId, doctorId, startTimeParsed, endTimeParsed, maxReservations);
     }
     @PostMapping("/deleteSchedule")
     public int deleteSchedule(@RequestParam int scheduleId) {

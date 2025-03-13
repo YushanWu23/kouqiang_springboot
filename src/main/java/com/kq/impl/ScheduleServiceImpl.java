@@ -20,7 +20,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     IDoctorDao iDoctorDao;
    @Override
     public Schedule createSchedule(String doctorId, LocalDateTime startTime, LocalDateTime endTime, int maxReservations){
-       checkScheduleConflict(doctorId, startTime, endTime);
+       checkScheduleConflict(doctorId, startTime, endTime,null);
        Doctor doctor = iDoctorDao.findDoctorByDoctorId(doctorId);
        if (doctor == null) {
            throw new IllegalArgumentException("医生ID不存在: " + doctorId);
@@ -34,8 +34,8 @@ public class ScheduleServiceImpl implements IScheduleService {
        iScheduleDao.save(schedule);
        return schedule;
     }
-    private void checkScheduleConflict(String doctorId, LocalDateTime startTime, LocalDateTime endTime){
-        List<Schedule> conflicts = iScheduleDao.findConflictingSchedules(doctorId,startTime,endTime,null);
+    private void checkScheduleConflict(String doctorId, LocalDateTime startTime, LocalDateTime endTime, Integer excludeId){
+        List<Schedule> conflicts = iScheduleDao.findConflictingSchedules(doctorId,startTime,endTime,excludeId);
         if(!conflicts.isEmpty()){
             throw new IllegalStateException("排班时间冲突，请选择其他时间段");
         }
@@ -43,7 +43,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public Schedule updateSchedule(int scheduleId,String doctorId, LocalDateTime startTime, LocalDateTime endTime, int maxReservations){
        Schedule schedule = iScheduleDao.findScheduleByScheduleId(scheduleId);
-       checkScheduleConflict(doctorId, startTime, endTime);
+       checkScheduleConflict(doctorId, startTime, endTime,scheduleId);
        Doctor doctor = iDoctorDao.findDoctorByDoctorId(doctorId);
         if (doctor == null) {
             throw new IllegalArgumentException("医生ID不存在: " + doctorId);
@@ -59,7 +59,11 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public int deleteSchedule(int scheduleId){
         Schedule schedule = iScheduleDao.findScheduleByScheduleId(scheduleId);
-        iScheduleDao.delete(schedule);
+        if (schedule != null) {
+            iScheduleDao.delete(schedule);
+        } else {
+            throw new IllegalArgumentException("排班ID不存在: " + scheduleId);
+        }
         return 1;
     }
     @Override
