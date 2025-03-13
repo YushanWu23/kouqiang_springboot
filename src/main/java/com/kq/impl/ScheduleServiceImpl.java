@@ -62,5 +62,8 @@ public class ScheduleServiceImpl implements IScheduleService {
         iScheduleDao.delete(schedule);
         return 1;
     }
-
+    @Override
+    public List<Schedule> getAllSchedules(){
+       return iScheduleDao.findAll();
+    }
 }
