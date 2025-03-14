@@ -25,5 +25,11 @@ public interface IScheduleDao extends JpaRepository<Schedule,Integer> {
                                             @Param("startTime") LocalDateTime startTime,
                                             @Param("endTime") LocalDateTime endTime,
                                             @Param("excludeId") Integer excludeId);
+    @Query("SELECT s FROM Schedule s WHERE s.doctor.doctorId = :doctorId AND s.startTime >= :start AND s.endTime <= :end ORDER BY s.scheduleId DESC")
+    List<Schedule> findSchedulesByDoctorIdAndDateRange(@Param("doctorId") String doctorId,
+                                                       @Param("start") LocalDateTime start,
+                                                       @Param("end") LocalDateTime end);
+    @Query("SELECT s FROM Schedule s ORDER BY s.scheduleId DESC")
+    List<Schedule> findAllOrderByScheduleIdDesc();
 }
 

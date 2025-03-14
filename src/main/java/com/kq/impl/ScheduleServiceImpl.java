@@ -1,8 +1,10 @@
 package com.kq.impl;
 
 import com.kq.dao.IDoctorDao;
+import com.kq.dao.IReservationDao;
 import com.kq.dao.IScheduleDao;
 import com.kq.pojo.Doctor;
+import com.kq.pojo.Reservation;
 import com.kq.pojo.Schedule;
 import com.kq.service.IDoctorService;
 import com.kq.service.IScheduleService;
@@ -10,7 +12,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ScheduleServiceImpl implements IScheduleService {
@@ -18,6 +22,8 @@ public class ScheduleServiceImpl implements IScheduleService {
     IScheduleDao iScheduleDao;
     @Resource
     IDoctorDao iDoctorDao;
+    @Resource
+    IReservationDao iReservationDao;
    @Override
     public Schedule createSchedule(String doctorId, LocalDateTime startTime, LocalDateTime endTime, int maxReservations){
        checkScheduleConflict(doctorId, startTime, endTime,null);
@@ -30,7 +36,7 @@ public class ScheduleServiceImpl implements IScheduleService {
        schedule.setStartTime(startTime);
        schedule.setEndTime(endTime);
        schedule.setMaxReservations(maxReservations);
-       schedule.setStatus("Active");
+       schedule.setStatus(0);
        iScheduleDao.save(schedule);
        return schedule;
     }
@@ -52,7 +58,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         schedule.setStartTime(startTime);
         schedule.setEndTime(endTime);
         schedule.setMaxReservations(maxReservations);
-        schedule.setStatus("Active");
+        schedule.setStatus(0);
         iScheduleDao.save(schedule);
         return schedule;
     }
@@ -67,7 +73,40 @@ public class ScheduleServiceImpl implements IScheduleService {
         return 1;
     }
     @Override
-    public List<Schedule> getAllSchedules(){
-       return iScheduleDao.findAll();
+    public List<Schedule> getAllSchedules() {
+        List<Schedule> schedules = iScheduleDao.findAllOrderByScheduleIdDesc();
+        LocalDateTime now = LocalDateTime.now();
+        for (Schedule schedule : schedules) {
+            if (schedule.getEndTime().isBefore(now)){
+                schedule.setStatus(2);
+                iScheduleDao.save(schedule);
+            }
+            // 检查已预约的排班是否超过结束时间
+            List<Reservation> reservations = iReservationDao.findBySchedule(schedule);
+            for (Reservation reservation : reservations) {
+                if (reservation.getStatus()==1 && schedule.getEndTime().isBefore(now)) {
+                    reservation.setStatus(2);
+                    iReservationDao.save(reservation);
+                }
+                System.out.println(reservation.getStatus());
+            }
+        }
+        return schedules;
+    }
+    @Override
+    public List<Schedule> getScheduleByDoctorId(String doctorId, String startDate, String endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime start = LocalDateTime.parse(startDate + "T00:00:00", DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime end = LocalDateTime.parse(endDate + "T23:59:59", DateTimeFormatter.ISO_DATE_TIME);
+        List<Schedule> schedules = iScheduleDao.findSchedulesByDoctorIdAndDateRange(doctorId, start, end);
+
+        LocalDateTime now = LocalDateTime.now();
+        for (Schedule schedule : schedules) {
+            if (schedule.getEndTime().isBefore(now) ){
+                schedule.setStatus(2); // 更新状态为 "finished"
+                iScheduleDao.save(schedule);
+            }
+        }
+        return schedules;
     }
 }
