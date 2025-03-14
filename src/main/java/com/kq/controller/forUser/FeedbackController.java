@@ -14,7 +14,7 @@ import java.util.List;
 public class FeedbackController {//反馈
     @Resource
     IFeedbackService iFeedbackService;
-    @GetMapping("/getFeedbackAll")//根据用户编号查询反馈
+    @GetMapping("/getFeedbackAll")
     List<Feedback> getFeedbackAll(){
         return iFeedbackService.getFeedbackAll();
     }
