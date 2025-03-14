@@ -8,8 +8,12 @@ import com.kq.pojo.*;
 import com.kq.service.IReservationService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ReservationServiceImpl implements IReservationService {
@@ -30,18 +34,21 @@ public class ReservationServiceImpl implements IReservationService {
             throw new IllegalStateException("该排班已约满");
         }
         Reservation reservation = new Reservation();
-        reservation.setStatus("待确认");
+        reservation.setStatus(1);//已预约
         reservation.setBookTime(LocalDateTime.now());
         reservation.setUser(user);
         reservation.setDoctor(doctor);
-        reservation.setSchedule(schedule);
         schedule.setCurrentReservations(schedule.getCurrentReservations()+1);//预约数加一
+        if (Objects.equals(schedule.getCurrentReservations(), schedule.getMaxReservations())) {
+            schedule.setStatus(1); // 设置排班状态为 1（已满）
+        }
         iScheduleDao.save(schedule);
+        reservation.setSchedule(schedule);
         iReservationDao.save(reservation);
         return reservation;
     }
     @Override
-    public Reservation updateReservationStatus(int reservationId, String status){
+    public Reservation updateReservationStatus(int reservationId, int status){
         Reservation reservation = iReservationDao.findReservationByReservationId(reservationId);
         reservation.setStatus(status);
         iReservationDao.save(reservation);
@@ -50,12 +57,24 @@ public class ReservationServiceImpl implements IReservationService {
     @Override
     public int deleteReservation(int reservationId){
         Reservation reservation = iReservationDao.findReservationByReservationId(reservationId);
-        reservation.setStatus("取消");
+        reservation.setStatus(0);//未预约
         iReservationDao.save(reservation);
         Schedule schedule = reservation.getSchedule();
         schedule.setCurrentReservations(schedule.getCurrentReservations()-1);
         iScheduleDao.save(schedule);
         return 1;
     }
+    @Override
+    public List<Reservation> getReservationByUserId( String userId) {
+        List<Reservation> reservations = iReservationDao.getReservationsByUserUserId(userId);
+        /*for (Reservation reservation : reservations) {
+            System.out.println(reservation.getStatus());
+        }*/
+        return reservations;
+    }
+    @Override
+    public Reservation getReservationByUserIdAndScheduleId( String userId,int scheduleId) {
+        return iReservationDao.getReservationByUserUserIdAndScheduleScheduleId(userId,scheduleId);
 
+    }
 }
