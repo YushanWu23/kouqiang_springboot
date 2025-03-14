@@ -12,17 +12,14 @@ public class Reservation {//预约
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservationId;
-    private String status;// 状态(待确认/已预约/已完成/取消)
+    private Integer status = 0;// 状态(0未预约/1已预约/2已完成)
     private LocalDateTime bookTime = LocalDateTime.now();
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="userId",nullable = false,referencedColumnName = "userId")
     private User user;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="doctorId",nullable = false,referencedColumnName = "doctorId")
     private Doctor doctor;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="scheduleId",nullable = false,referencedColumnName = "scheduleId")
     private Schedule schedule;

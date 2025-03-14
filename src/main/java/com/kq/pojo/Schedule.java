@@ -21,7 +21,7 @@ public class Schedule {//排班
     @Column(nullable = false)
     private Integer currentReservations = 0; // 当前预约数
     @Column(nullable = false)
-    private String status="Active";
+    private Integer status=0;//0活跃，1已满，2结束
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
