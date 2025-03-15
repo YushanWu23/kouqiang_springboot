@@ -26,5 +26,4 @@ public interface IDoctorService {
     int updateOnlineStatus(String doctorId,boolean onlineStatus);
     List<Schedule> getScheduleByDoctorId(String doctorId,String startDate,String endDate);
     List<Reservation> getTodayReservation(String doctorId);
-    MedicalRecord createMedicalRecord(String doctorId,String userId,String diagnosis, String treatmentPlan,MultipartFile[] files);
 }
