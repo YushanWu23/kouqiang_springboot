@@ -94,7 +94,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         return schedules;
     }
     @Override
-    public List<Schedule> getScheduleByDoctorId(String doctorId, String startDate, String endDate) {
+    public List<Schedule> getScheduleByDoctorIdAndTime(String doctorId, String startDate, String endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime start = LocalDateTime.parse(startDate + "T00:00:00", DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime end = LocalDateTime.parse(endDate + "T23:59:59", DateTimeFormatter.ISO_DATE_TIME);
@@ -103,6 +103,18 @@ public class ScheduleServiceImpl implements IScheduleService {
         LocalDateTime now = LocalDateTime.now();
         for (Schedule schedule : schedules) {
             if (schedule.getEndTime().isBefore(now) ){
+                schedule.setStatus(2); // 更新状态为 "finished"
+                iScheduleDao.save(schedule);
+            }
+        }
+        return schedules;
+    }
+    @Override
+    public List<Schedule> getScheduleByDoctorId(String doctorId) {
+        List<Schedule> schedules = iScheduleDao.findByDoctorDoctorId(doctorId);
+        LocalDateTime now = LocalDateTime.now();
+        for (Schedule schedule : schedules) {
+            if (schedule.getEndTime().isBefore(now)) {
                 schedule.setStatus(2); // 更新状态为 "finished"
                 iScheduleDao.save(schedule);
             }

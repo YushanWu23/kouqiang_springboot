@@ -12,5 +12,6 @@ public interface IScheduleService {
     Schedule updateSchedule(int scheduleId,String doctorId, LocalDateTime startTime, LocalDateTime endTime, int maxReservations);
     int deleteSchedule(int scheduleId);
     List<Schedule> getAllSchedules();
-    List<Schedule> getScheduleByDoctorId(String doctorId, String startDate, String endDate);
+    List<Schedule> getScheduleByDoctorIdAndTime(String doctorId, String startDate, String endDate);
+    List<Schedule> getScheduleByDoctorId(String doctorId);
 }

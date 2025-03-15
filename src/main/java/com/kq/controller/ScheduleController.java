@@ -17,11 +17,15 @@ import java.util.List;
 public class ScheduleController {
     @Resource
     IScheduleService iScheduleService;
-    @GetMapping("/getScheduleByDoctorId")
-    public List<Schedule> getScheduleByDoctorId(@RequestParam String doctorId,
+    @GetMapping("/getScheduleByDoctorIdAndTime")
+    public List<Schedule> getScheduleByDoctorIdAndTime(@RequestParam String doctorId,
                                                 @RequestParam String startDate,
                                                 @RequestParam String endDate) {
-        return iScheduleService.getScheduleByDoctorId(doctorId, startDate, endDate);
+        return iScheduleService.getScheduleByDoctorIdAndTime(doctorId, startDate, endDate);
+    }
+    @GetMapping("/getScheduleByDoctorId")
+    public List<Schedule> getScheduleByDoctorId(@RequestParam String doctorId) {
+        return iScheduleService.getScheduleByDoctorId(doctorId);
     }
     @PostMapping("/createSchedule")
     public ResponseEntity<String>  createSchedule(@RequestParam String doctorId,

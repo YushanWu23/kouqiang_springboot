@@ -17,6 +17,7 @@ public interface IScheduleDao extends JpaRepository<Schedule,Integer> {
     @Transactional
     Schedule findScheduleByScheduleId(int id);
     List<Schedule> findByDoctorDoctorIdAndStartTimeBetweenOrderByStartTimeAsc(String doctorId, LocalDateTime start, LocalDateTime end);
+    List<Schedule> findByDoctorDoctorId(String doctorId);
     @Query("SELECT s FROM Schedule s WHERE " +
             "s.doctor.doctorId = :doctorId AND " +
             "(s.startTime < :endTime AND s.endTime > :startTime) AND " +
