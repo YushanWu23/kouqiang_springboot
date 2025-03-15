@@ -2,6 +2,7 @@ package com.kq.controller;
 
 import com.kq.pojo.Reservation;
 import com.kq.pojo.Schedule;
+import com.kq.pojo.User;
 import com.kq.service.IReservationService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,9 @@ public class ReservationController {
     @GetMapping("/getReservationByUserIdAndScheduleId")
     public Reservation getReservationByUserIdAndScheduleId( String userId,int scheduleId){
         return iReservationService.getReservationByUserIdAndScheduleId(userId,scheduleId);
+    }
+    @GetMapping("/getUserByDoctorIdAndReservationStatus")
+    public List<User> getUserByDoctorIdAndReservationStatus(@RequestParam String doctorId,@RequestParam int reservationStatus){
+        return  iReservationService.getUserByDoctorIdAndReservationStatus(doctorId,reservationStatus);
     }
 }

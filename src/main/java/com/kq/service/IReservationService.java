@@ -1,6 +1,7 @@
 package com.kq.service;
 
 import com.kq.pojo.Reservation;
+import com.kq.pojo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,4 +14,5 @@ public interface IReservationService {
     int deleteReservation(int reservationId);
     List<Reservation> getReservationByUserId( String userId);
     Reservation getReservationByUserIdAndScheduleId( String userId,int scheduleId);
+    List<User> getUserByDoctorIdAndReservationStatus( String doctorId,  int reservationStatus);
 }

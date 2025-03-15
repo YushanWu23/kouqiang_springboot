@@ -77,4 +77,13 @@ public class ReservationServiceImpl implements IReservationService {
         return iReservationDao.getReservationByUserUserIdAndScheduleScheduleId(userId,scheduleId);
 
     }
+    @Override
+    public List<User> getUserByDoctorIdAndReservationStatus( String doctorId,  int reservationStatus){
+        List<Reservation> reservationList = iReservationDao.getReservationsByDoctorDoctorIdAndStatus(doctorId,reservationStatus);
+        List<User> userList = new ArrayList<>();
+        for (Reservation reservation : reservationList) {
+            userList.add(reservation.getUser());
+        }
+        return userList;
+    }
 }

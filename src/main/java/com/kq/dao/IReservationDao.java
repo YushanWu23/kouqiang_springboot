@@ -18,5 +18,6 @@ public interface IReservationDao extends JpaRepository<Reservation,Integer> {
     List<Reservation> findBySchedule(Schedule schedule);
     List<Reservation> getReservationsByUserUserId(String userId);
     Reservation getReservationByUserUserIdAndScheduleScheduleId(String userId, int scheduleId);
+    List<Reservation> getReservationsByDoctorDoctorIdAndStatus(String doctorId, int reservationStatus);
 }
 
