@@ -15,4 +15,5 @@ public interface IReservationService {
     List<Reservation> getReservationByUserId( String userId);
     Reservation getReservationByUserIdAndScheduleId( String userId,int scheduleId);
     List<User> getUserByDoctorIdAndReservationStatus( String doctorId,  int reservationStatus);
+    List<Reservation> getTodayReservation(String doctorId);
 }

@@ -39,4 +39,8 @@ public class ReservationController {
     public List<User> getUserByDoctorIdAndReservationStatus(@RequestParam String doctorId,@RequestParam int reservationStatus){
         return  iReservationService.getUserByDoctorIdAndReservationStatus(doctorId,reservationStatus);
     }
+    @GetMapping("/getTodayReservation")//得到今日预约信息
+    List<Reservation> getTodayReservation (@RequestParam String doctorId){
+        return iReservationService.getTodayReservation (doctorId);
+    }
 }

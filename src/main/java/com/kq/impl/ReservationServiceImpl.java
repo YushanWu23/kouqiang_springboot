@@ -10,7 +10,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -85,5 +87,13 @@ public class ReservationServiceImpl implements IReservationService {
             userList.add(reservation.getUser());
         }
         return userList;
+    }
+    @Override
+    public List<Reservation> getTodayReservation(String doctorId) {
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+
+        // 查询关联当前时间的排班预约
+        return iReservationDao.findByDoctorDoctorIdAndSchedule(doctorId, now);
     }
 }
