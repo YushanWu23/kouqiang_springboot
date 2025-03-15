@@ -146,17 +146,6 @@ public class DoctorServiceImpl implements IDoctorService {
                 end
         );
     }
-    @Override
-    public List<Reservation> getTodayReservation(String doctorId){
-        // 获取当天时间范围
-        LocalDateTime start = LocalDate.now().atStartOfDay();
-        LocalDateTime end = LocalDate.now().atTime(LocalTime.MAX);
 
-        return iReservationDao.findByDoctorDoctorIdAndBookTimeBetween(
-                doctorId,
-                start,
-                end
-        );
-    }
 
 }

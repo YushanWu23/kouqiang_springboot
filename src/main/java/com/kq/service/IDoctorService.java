@@ -25,5 +25,5 @@ public interface IDoctorService {
     /*int getDoctorInfo(String doctorId);*/
     int updateOnlineStatus(String doctorId,boolean onlineStatus);
     List<Schedule> getScheduleByDoctorId(String doctorId,String startDate,String endDate);
-    List<Reservation> getTodayReservation(String doctorId);
+
 }

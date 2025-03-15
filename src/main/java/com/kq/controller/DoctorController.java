@@ -60,8 +60,5 @@ public class DoctorController {
     List<Schedule> getScheduleByDoctorId (@RequestParam String doctorId,@RequestParam String startDate,@RequestParam String endDate){
         return iDoctorService.getScheduleByDoctorId (doctorId,startDate,endDate);
     }
-    @GetMapping("/getTodayReservation")//得到今日预约信息
-    List<Reservation> getTodayReservation (@RequestParam String doctorId){
-        return iDoctorService.getTodayReservation (doctorId);
-    }
+
 }
