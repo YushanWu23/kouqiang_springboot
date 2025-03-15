@@ -63,6 +63,9 @@ public class MedicalRecordServiceImpl implements IMedicalRecordService {
                         // 生成图片访问 URL
                         String imageUrl = "/uploads/" + fileName;
                         imageUrls.add(imageUrl);
+
+                        System.out.println("文件保存成功：" + filePath); // 打印文件路径
+                        System.out.println("生成的图片 URL：" + imageUrl); // 打印生成的 URL
                     } catch (IOException e) {
                         throw new RuntimeException("Failed to store image file", e);
                     }
@@ -83,10 +86,10 @@ public class MedicalRecordServiceImpl implements IMedicalRecordService {
     }
     @Override
     public List<MedicalRecord> searchMedicalRecords(String doctorId, String userId, LocalDateTime date) {
-        return iMedicalRecordDao.findAll().stream()
-                .filter(record -> (doctorId == null || doctorId.equals(record.getDoctor().getDoctorId())))
-                .filter(record -> (userId == null || userId.equals(record.getUser().getUserId())))
-                .filter(record -> (date == null || record.getVisitTime().toLocalDate().equals(date.toLocalDate())))
-                .collect(Collectors.toList());
+        return iMedicalRecordDao.findByDoctorIdAndUserIdAndVisitDate(doctorId, userId, date);
+    }
+    @Override
+   public MedicalRecord getMedicalRecordById ( int medicalRecordId){
+        return iMedicalRecordDao.findMedicalRecordByMedicalRecordId(medicalRecordId);
     }
 }

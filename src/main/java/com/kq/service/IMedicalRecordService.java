@@ -13,5 +13,6 @@ public interface IMedicalRecordService {
     MedicalRecord createMedicalRecord(String doctorId, String userId, String diagnosis, String treatmentPlan, MultipartFile[] files);
     List<MedicalRecord> getMedicalRecordByUserId(String userId);
     List<MedicalRecord> getAllMedicalRecord ();
+    MedicalRecord getMedicalRecordById ( int medicalRecordId);
     List<MedicalRecord> searchMedicalRecords (String doctorId, String userId, LocalDateTime date);
 }

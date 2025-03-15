@@ -20,10 +20,6 @@ public class MedicalRecord {//病历
     @CollectionTable(name = "medicalRecord_images", joinColumns = @JoinColumn(name = "medicalRecord_id"))
     @Column(name = "image_url")
     private List<String> imageUrls;
-    @ElementCollection
-    @CollectionTable(name = "medicalRecord_images", joinColumns = @JoinColumn(name = "medicalRecord_id"))
-    @Column(name = "medicalRecord_url")
-    private List<String> medicalRecordUrls;
     @ManyToOne
     @JoinColumn(
             name = "userId",

@@ -27,6 +27,10 @@ public class MedicalRecordController {
     public List<MedicalRecord> getAllMedicalRecord (){
         return iMedicalRecordService.getAllMedicalRecord ();
     }
+    @GetMapping("/getMedicalRecordById")
+    MedicalRecord getMedicalRecordById (@RequestParam int medicalRecordId){
+        return iMedicalRecordService.getMedicalRecordById(medicalRecordId);
+    }
     @GetMapping("/searchMedicalRecords")
     public List<MedicalRecord> searchMedicalRecords (@RequestParam(value = "doctorId",required = false) String doctorId,
                                                      @RequestParam(value = "userId",required = false) String userId,
