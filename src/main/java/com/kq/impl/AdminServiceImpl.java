@@ -84,18 +84,7 @@ public class AdminServiceImpl implements IAdminService {
         iAdminDao.save(admin);
         return 1;
     }
-    @Override
-    public List<MedicalRecord> getAllMedicalRecord (){
-        return iMedicalRecordDao.findAll();
-    }
-    @Override
-    public List<MedicalRecord> searchMedicalRecords(String doctorId, String userId, LocalDateTime date) {
-        return iMedicalRecordDao.findAll().stream()
-                .filter(record -> (doctorId == null || doctorId.equals(record.getDoctor().getDoctorId())))
-                .filter(record -> (userId == null || userId.equals(record.getUser().getUserId())))
-                .filter(record -> (date == null || record.getVisitTime().toLocalDate().equals(date.toLocalDate())))
-                .collect(Collectors.toList());
-    }
+
     @Override
     public List<Doctor> getAllDoctors (){
         return iDoctorDao.findAll();

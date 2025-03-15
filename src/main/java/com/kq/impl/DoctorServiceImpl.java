@@ -5,8 +5,10 @@ import com.kq.dao.*;
 import com.kq.pojo.*;
 import com.kq.service.IDoctorService;
 import jakarta.annotation.Resource;
+import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 @Component
 public class DoctorServiceImpl implements IDoctorService {
@@ -155,48 +158,5 @@ public class DoctorServiceImpl implements IDoctorService {
                 end
         );
     }
-    @Override
-    @Transactional
-    public MedicalRecord createMedicalRecord(String doctorId, String userId, String diagnosis, String treatmentPlan, MultipartFile[] files){
-        Doctor doctor = iDoctorDao.findDoctorByDoctorId(doctorId);
-        User user = iUserDao.findUserByUserId(userId);
-        MedicalRecord medicalRecord = new MedicalRecord();
-        medicalRecord.setDoctor(doctor);
-        medicalRecord.setUser(user);
-        medicalRecord.setVisitTime(LocalDateTime.now());
-        medicalRecord.setDiagnosis(diagnosis);
-        medicalRecord.setTreatmentPlan(treatmentPlan);
-        List<String> imageUrls = new ArrayList<>();
-        if (files != null && files.length > 0) {
-            for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    try {
-                        // 确保上传目录存在
-                        Path uploadDir = Paths.get("D:\\kouqiang-uploadImg");
-                        if (!Files.exists(uploadDir)) {
-                            Files.createDirectories(uploadDir);
-                        }
-
-                        // 生成唯一的文件名
-                        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-                        Path filePath = uploadDir.resolve(fileName);
-
-                        // 保存文件
-                        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                        // 生成图片访问 URL
-                        String imageUrl = "/uploads/" + fileName;
-                        imageUrls.add(imageUrl);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to store image file", e);
-                    }
-                }
-            }
-        }
-        medicalRecord.setImageUrls(imageUrls);
-        iMedicalRecordDao.save(medicalRecord);
-        return medicalRecord;
-    }
-
 
 }

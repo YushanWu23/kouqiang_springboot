@@ -32,16 +32,7 @@ public class AdminController {
     int sendForgetPasswordEmailCode(@RequestParam String adminId){
         return iAdminService.sendForgetPasswordEmailCode(adminId);
     }
-    @GetMapping("/getAllMedicalRecord")//查看所有病历
-    public List<MedicalRecord> getAllMedicalRecord (){
-        return iAdminService.getAllMedicalRecord ();
-    }
-    @GetMapping("/searchMedicalRecords")//搜索病历
-    public List<MedicalRecord> searchMedicalRecords (@RequestParam(value = "doctorId",required = false) String doctorId,
-                                                     @RequestParam(value = "userId",required = false) String userId,
-                                                     @RequestParam(value = "date",required = false) LocalDateTime date){
-        return iAdminService.searchMedicalRecords (doctorId, userId, date);
-    }
+
     @GetMapping("/getAllDoctors")
     public List<Doctor> getAllDoctors (){
         return iAdminService.getAllDoctors();

@@ -48,11 +48,11 @@ public class DoctorController {
     int sendForgetPasswordEmailCode(@RequestParam String doctorId){
         return iDoctorService.sendForgetPasswordEmailCode(doctorId);
     }
-    @PostMapping("/updateDoctorInfo")//更改信息
+    @PostMapping("/updateDoctorInfo")
     int updateUserInfo (@RequestParam String doctorId,@RequestParam String doctorName,@RequestParam int doctorSex,@RequestParam String doctorImg,@RequestParam String specialty,@RequestParam String title){
         return iDoctorService.updateDoctorInfo (doctorId,doctorName,doctorSex,doctorImg,specialty,title);
     }
-    @PostMapping("/updateOnlineStatus")//更改在线状态
+    @PostMapping("/updateOnlineStatus")
     int updateOnlineStatus (@RequestParam String doctorId,@RequestParam boolean onlineStatus){
         return iDoctorService.updateOnlineStatus (doctorId,onlineStatus);
     }
@@ -63,9 +63,5 @@ public class DoctorController {
     @GetMapping("/getTodayReservation")//得到今日预约信息
     List<Reservation> getTodayReservation (@RequestParam String doctorId){
         return iDoctorService.getTodayReservation (doctorId);
-    }
-    @PostMapping("/createMedicalRecord")//创建病历
-    MedicalRecord createMedicalRecord (@RequestParam String doctorId, @RequestParam String userId,@RequestParam String diagnosis,@RequestParam String treatmentPlan,@RequestParam(value = "files",required = false) MultipartFile[] files){
-        return iDoctorService.createMedicalRecord (doctorId,userId,diagnosis,treatmentPlan,files);
     }
 }
