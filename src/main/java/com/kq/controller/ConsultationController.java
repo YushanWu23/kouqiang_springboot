@@ -4,6 +4,7 @@ import com.kq.pojo.ChatMessage;
 import com.kq.pojo.Consultation;
 import com.kq.service.IConsultationService;
 import jakarta.annotation.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -30,7 +31,25 @@ public class ConsultationController {
         String userId = principal.getName();
         return iConsultationService.getConsultationRequests(userId);
     }
+    @PostMapping("/start")
+    public ResponseEntity<?> startConsultationHttp(
+            @RequestBody Map<String, String> request,
+            Principal principal
+    ) {
+        String doctorId = request.get("doctorId");
+        String userId = principal.getName();
 
+        Consultation consultation = iConsultationService.createConsultation(userId, doctorId);
+
+        // WebSocket通知医生
+        messagingTemplate.convertAndSendToUser(
+                doctorId,
+                "/queue/consultation/requests",
+                consultation
+        );
+
+        return ResponseEntity.ok(consultation);
+    }
     @MessageMapping("/start")
     public void startConsultation( Principal principal
             , @Payload Map<String, String> payload) {
@@ -82,6 +101,10 @@ public class ConsultationController {
     public void handleMessage(Principal  principal,
                               @DestinationVariable Integer consultationId,
                               @RequestBody ChatMessage message) {
+        System.out.println("收到消息请求，consultationId: " + consultationId);
+        System.out.println("发送者: " + principal.getName());
+        System.out.println("消息内容: " + message.getContent());
+
         if (principal == null) {
             throw new AccessDeniedException("用户未登录");
         }
@@ -90,34 +113,41 @@ public class ConsultationController {
         Consultation consultation = iConsultationService.validateParticipant(consultationId, userId);
 
         ChatMessage savedMessage = iConsultationService.saveMessage(consultationId, userId, message);
-
+        System.out.println("消息已保存到数据库: " + savedMessage);
         // 发送给另一方
         String recipient = principal.equals(consultation.getUser().getUserId()) ?
                 consultation.getDoctor().getDoctorId() :
                 consultation.getUser().getUserId();
-
+        System.out.println("准备发送消息给接收者: " + recipient);
         messagingTemplate.convertAndSendToUser(
                 recipient,
                 "/queue/consultation/messages",
                 savedMessage
         );
+        System.out.println("消息已发送给接收者");
     }
     @GetMapping("/messages/{consultationId}")
     public List<ChatMessage> getMessages(@PathVariable Integer consultationId) {
         return iConsultationService.getMessages(consultationId);
     }
     @MessageMapping("/accept")
-    public void acceptConsultation(Principal principal, @RequestParam Integer consultationId) {
-        if (principal == null) {
-            throw new AccessDeniedException("用户未登录");
-        }
-
+    public void acceptConsultation(
+            @Payload Map<String, Integer> payload,
+            Principal principal
+    ) {
+        Integer consultationId = payload.get("consultationId");
         String doctorId = principal.getName();
+
         Consultation consultation = iConsultationService.acceptConsultation(consultationId, doctorId);
 
-        // 通知用户咨询已接受
+        // 通知双方
         messagingTemplate.convertAndSendToUser(
                 consultation.getUser().getUserId(),
+                "/queue/consultation/status",
+                consultation
+        );
+        messagingTemplate.convertAndSendToUser(
+                doctorId,
                 "/queue/consultation/status",
                 consultation
         );

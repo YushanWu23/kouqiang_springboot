@@ -56,6 +56,9 @@ public class ConsultationServiceImpl implements IConsultationService {
     }
     @Override
     public ChatMessage saveMessage(Integer consultationId, String senderId, ChatMessage message) {
+        System.out.println("准备保存消息，consultationId: " + consultationId);
+        System.out.println("发送者 ID: " + senderId);
+        System.out.println("消息内容: " + message.getContent());
         Consultation consultation = iConsultationDao.findByConsultationId(consultationId);
 
         // 验证发送者身份
@@ -68,7 +71,6 @@ public class ConsultationServiceImpl implements IConsultationService {
         message.setSendTime(LocalDateTime.now());
         message.setSender(senderId.equals(consultation.getDoctor().getDoctorId()) ?
                 "医生" : "用户");
-
         return iChatMessageDao.save(message);
     }
     @Override
