@@ -25,19 +25,37 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
             WebSocketHandler handler,
             Map<String, Object> attributes
     ) {
+        System.out.println("Handshake Request Headers: " + request.getHeaders());
         // 从请求参数或头中获取 Token
         String token = extractToken(request);
-        if (token != null && jwtTokenUtil.validateToken(token)) {
-            String userId = jwtTokenUtil.getUsernameFromToken(token).get("userId", String.class);
-            return () -> userId; // 返回用户身份
+        System.out.println("Extracted Token: " + token);
+        if (token != null) {
+            // 3. 验证 Token 是否有效
+            boolean isValid = jwtTokenUtil.validateToken(token);
+            System.out.println("Token 有效性: " + isValid);
+
+            if (isValid) {
+                // 4. 从 Token 中解析用户 ID
+                String userId = jwtTokenUtil.getUsernameFromToken(token).get("userId", String.class);
+                System.out.println("Token 解析出的用户 ID: " + userId);
+                return () -> userId;
+            }
         }
+        System.out.println("Token 无效或未找到，拒绝连接");
         return null; // 验证失败，拒绝连接
     }
 
     private String extractToken(ServerHttpRequest request) {
-        // 从查询参数或头中提取 Token
         if (request instanceof ServletServerHttpRequest) {
             HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
+
+            // 从 URL 参数中提取 Token
+            String token = servletRequest.getParameter("token");
+            if (token != null) {
+                return token;
+            }
+
+            // 保留原有从头提取逻辑
             String tokenHeader = servletRequest.getHeader("Authorization");
             if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
                 return tokenHeader.substring(7);

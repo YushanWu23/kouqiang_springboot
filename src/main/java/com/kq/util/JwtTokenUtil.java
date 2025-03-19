@@ -23,25 +23,27 @@ public class JwtTokenUtil {
     }
 
     public Claims getUsernameFromToken(String token) {//从token中获取用户信息
-        Claims claims = null;
         try {
-            claims = Jwts.parser()
+            Claims claims = Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-            System.out.println(claims.get("userId"));
-        }catch (JwtException ex){
-            ex.printStackTrace();
+            System.out.println("Token 解析结果: " + claims);
+            return claims;
+        } catch (Exception e) {
+            System.out.println("Token 解析失败: " + e.getMessage());
+            return null;
         }
-        return claims;
     }
 
     public boolean validateToken(String token) {
         try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+            System.out.println("Token 验证成功");
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("Token 验证失败: " + e.getMessage());
             return false;
         }
     }

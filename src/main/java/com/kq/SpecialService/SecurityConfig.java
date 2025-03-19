@@ -48,7 +48,7 @@ public class SecurityConfig {
                 )
                 // 添加 JWT 过滤器
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        System.out.println("Spring Security 配置生效：WebSocket 端点需要认证");
         return http.build();
     }
     // JWT 认证过滤器
