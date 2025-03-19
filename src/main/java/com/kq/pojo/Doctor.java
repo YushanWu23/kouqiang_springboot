@@ -20,7 +20,7 @@ public class Doctor {
     private String title;//职称
     private String doctorImg;
     private int doctorSex;
-    private boolean onlineStatus;
+    private boolean onlineStatus=false;
 
     @JsonIgnore
     @OneToMany(

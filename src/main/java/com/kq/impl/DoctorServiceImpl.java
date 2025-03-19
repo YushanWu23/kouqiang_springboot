@@ -28,6 +28,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Component
 public class DoctorServiceImpl implements IDoctorService {
@@ -146,6 +147,12 @@ public class DoctorServiceImpl implements IDoctorService {
                 end
         );
     }
-
-
+    @Override
+    public List<Doctor> getOnlineDoc(){
+        List<Doctor> doctorList= iDoctorDao.findAll().stream().filter(Doctor::isOnlineStatus).collect(Collectors.toList());
+        if(!doctorList.isEmpty()){
+            return doctorList;
+        }
+        return null;
+    }
 }

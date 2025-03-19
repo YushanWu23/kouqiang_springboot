@@ -56,6 +56,10 @@ public class DoctorController {
     int updateOnlineStatus (@RequestParam String doctorId,@RequestParam boolean onlineStatus){
         return iDoctorService.updateOnlineStatus (doctorId,onlineStatus);
     }
+    @GetMapping("/getOnlineDoc")
+    List<Doctor> getOnlineDoc(){
+        return iDoctorService.getOnlineDoc();
+    }
     @GetMapping("/getScheduleByDoctorId")//得到排班信息
     List<Schedule> getScheduleByDoctorId (@RequestParam String doctorId,@RequestParam String startDate,@RequestParam String endDate){
         return iDoctorService.getScheduleByDoctorId (doctorId,startDate,endDate);
