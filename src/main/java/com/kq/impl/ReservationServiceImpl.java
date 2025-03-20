@@ -76,6 +76,8 @@ public class ReservationServiceImpl implements IReservationService {
     }
     @Override
     public Reservation getReservationByUserIdAndScheduleId( String userId,int scheduleId) {
+        System.out.println(userId);
+        System.out.println(scheduleId);
         return iReservationDao.getReservationByUserUserIdAndScheduleScheduleId(userId,scheduleId);
 
     }
