@@ -50,7 +50,7 @@ public class ConsultationController {
 
         return ResponseEntity.ok(consultation);
     }
-    @MessageMapping("/start")
+    /*@MessageMapping("/start")
     public void startConsultation( Principal principal
             , @Payload Map<String, String> payload) {
         String doctorId = payload.get("doctorId");
@@ -64,6 +64,20 @@ public class ConsultationController {
         String userId = principal.getName();
         System.out.println("当前用户 ID: " + userId);
         System.out.println("传递的 doctorId: " + doctorId);
+        Consultation consultation = iConsultationService.createConsultation(userId, doctorId);
+
+        // 通知医生
+        messagingTemplate.convertAndSendToUser(
+                doctorId,
+                "/queue/consultation/requests",
+                consultation
+        );
+    }*/
+    @MessageMapping("/start")
+    public void startConsultation(Principal principal, @Payload Map<String, String> payload) {
+        String doctorId = payload.get("doctorId");
+        String userId = principal.getName();
+
         Consultation consultation = iConsultationService.createConsultation(userId, doctorId);
 
         // 通知医生
@@ -98,24 +112,25 @@ public class ConsultationController {
         );
     }
     @MessageMapping("/{consultationId}/message")
-    public void handleMessage(Principal  principal,
-                              @DestinationVariable Integer consultationId,
-                              @RequestBody ChatMessage message) {
-        System.out.println("收到消息请求，consultationId: " + consultationId);
-        System.out.println("发送者: " + principal.getName());
-        System.out.println("消息内容: " + message.getContent());
-
-        if (principal == null) {
-            throw new AccessDeniedException("用户未登录");
-        }
-
+    public void handleMessage(
+            Principal principal,
+            @DestinationVariable Integer consultationId,
+            @Payload ChatMessage message
+    ) {
         String userId = principal.getName();
         Consultation consultation = iConsultationService.validateParticipant(consultationId, userId);
 
+        // 保存消息
         ChatMessage savedMessage = iConsultationService.saveMessage(consultationId, userId, message);
-        System.out.println("消息已保存到数据库: " + savedMessage);
+        System.out.println("消息已保存到数据库");
+        // 发送给自己
+        messagingTemplate.convertAndSendToUser(
+                userId,
+                "/queue/consultation/messages",
+                savedMessage
+        );
         // 发送给另一方
-        String recipient = principal.equals(consultation.getUser().getUserId()) ?
+        String recipient = consultation.getUser().getUserId().equals(userId) ?
                 consultation.getDoctor().getDoctorId() :
                 consultation.getUser().getUserId();
         System.out.println("准备发送消息给接收者: " + recipient);
@@ -126,7 +141,7 @@ public class ConsultationController {
         );
         System.out.println("消息已发送给接收者");
     }
-    @GetMapping("/messages/{consultationId}")
+    @GetMapping("/messages/{consultationId}")// 获取历史消息
     public List<ChatMessage> getMessages(@PathVariable Integer consultationId) {
         return iConsultationService.getMessages(consultationId);
     }
@@ -139,7 +154,7 @@ public class ConsultationController {
         String doctorId = principal.getName();
 
         Consultation consultation = iConsultationService.acceptConsultation(consultationId, doctorId);
-
+        System.out.println("已接收");
         // 通知双方
         messagingTemplate.convertAndSendToUser(
                 consultation.getUser().getUserId(),
