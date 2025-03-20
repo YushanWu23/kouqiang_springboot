@@ -11,9 +11,18 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -166,5 +175,31 @@ public class ConsultationController {
                 "/queue/consultation/status",
                 consultation
         );
+    }
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("文件为空");
+        }
+
+        try {
+            // 确保上传目录存在
+            Path uploadDir = Paths.get("D:\\kouqiang-uploadImg");
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+
+            // 生成唯一的文件名
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = uploadDir.resolve(fileName);
+
+            // 保存文件
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // 返回文件访问路径
+            return "/uploads/" + fileName;
+        } catch (IOException e) {
+            throw new RuntimeException("文件上传失败", e);
+        }
     }
 }
