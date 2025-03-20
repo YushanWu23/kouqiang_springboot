@@ -1,9 +1,6 @@
 package com.kq.impl.forUser;
 import com.kq.dao.*;
-import com.kq.dao.forUser.ICartDao;
-import com.kq.dao.forUser.IDeliveryAddressDao;
-import com.kq.dao.forUser.IProductDao;
-import com.kq.dao.forUser.IOrdersDao;
+import com.kq.dao.forUser.*;
 import com.kq.pojo.*;
 import com.kq.pojo.forUser.Cart;
 import com.kq.pojo.forUser.DeliveryAddress;
@@ -29,6 +26,8 @@ public class OrdersServiceImpl implements IOrdersService {
     IDeliveryAddressDao iDeliveryAddressDao;
     @Resource
     ICartDao iCartDao;
+    @Resource
+    IOrderDetailetDao iOrderDetailetDao;
     @Override
     @Transactional
     public Orders createOrders(String userId, int daId, Double orderTotal) {
@@ -72,5 +71,21 @@ public class OrdersServiceImpl implements IOrdersService {
         orders.setOrderState(1);
         iOrdersDao.save(orders);
         return orders.getOrderState();
+    }
+    @Override
+    @Transactional
+    public Boolean deleteOrder(int orderId) {
+        Orders orders = iOrdersDao.findOrdersByOrderId(orderId);
+        if (orders == null) {
+            return false;
+        }
+        // 删除订单明细
+        List<OrderDetailet> orderDetailets = orders.getOrderDetailets();
+        if (orderDetailets != null && !orderDetailets.isEmpty()) {
+            iOrderDetailetDao.deleteAll(orderDetailets);
+        }
+        // 删除订单
+        iOrdersDao.delete(orders);
+        return true;
     }
 }

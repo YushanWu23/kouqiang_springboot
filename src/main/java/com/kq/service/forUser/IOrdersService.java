@@ -10,4 +10,5 @@ public interface IOrdersService {
     Orders getOrdersByOrdersId(int orderId);
     List<Orders> getOrdersByUserId(String userId);
     int updateOrderState( int orderId);
+    Boolean deleteOrder(int orderId);
 }
