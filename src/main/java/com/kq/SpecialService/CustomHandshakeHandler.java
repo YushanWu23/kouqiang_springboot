@@ -30,12 +30,12 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
         String token = extractToken(request);
         System.out.println("Extracted Token: " + token);
         if (token != null) {
-            // 3. 验证 Token 是否有效
+            // 验证 Token 是否有效
             boolean isValid = jwtTokenUtil.validateToken(token);
             System.out.println("Token 有效性: " + isValid);
 
             if (isValid) {
-                // 4. 从 Token 中解析用户 ID
+                //从 Token 中解析用户 ID
                 String userId = jwtTokenUtil.getUsernameFromToken(token).get("userId", String.class);
                 System.out.println("Token 解析出的用户 ID: " + userId);
                 return () -> userId;
