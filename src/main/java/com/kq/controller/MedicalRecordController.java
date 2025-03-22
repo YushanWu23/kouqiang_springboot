@@ -3,9 +3,11 @@ package com.kq.controller;
 import com.kq.pojo.MedicalRecord;
 import com.kq.service.IMedicalRecordService;
 import jakarta.annotation.Resource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class MedicalRecordController {
     @GetMapping("/searchMedicalRecords")
     public List<MedicalRecord> searchMedicalRecords (@RequestParam(value = "doctorId",required = false) String doctorId,
                                                      @RequestParam(value = "userId",required = false) String userId,
-                                                     @RequestParam(value = "date",required = false) LocalDateTime date){
+                                                     @RequestParam(value = "date",required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
         return iMedicalRecordService.searchMedicalRecords (doctorId, userId, date);
     }
 }

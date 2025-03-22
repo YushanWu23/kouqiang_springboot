@@ -25,4 +25,14 @@ public interface IMedicalRecordDao extends JpaRepository<MedicalRecord,Integer> 
             @Param("userId") String userId,
             @Param("date") LocalDateTime date
     );
+    List<MedicalRecord> findByDoctorDoctorIdAndUserUserIdAndVisitTimeBetween(
+            String doctorId,
+            String userId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+    List<MedicalRecord> findByDoctorDoctorIdAndUserUserId(
+            String doctorId,
+            String userId
+    );
 }

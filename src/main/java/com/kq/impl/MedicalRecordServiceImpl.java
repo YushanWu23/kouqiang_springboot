@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +86,15 @@ public class MedicalRecordServiceImpl implements IMedicalRecordService {
         return iMedicalRecordDao.findAll();
     }
     @Override
-    public List<MedicalRecord> searchMedicalRecords(String doctorId, String userId, LocalDateTime date) {
-        return iMedicalRecordDao.findByDoctorIdAndUserIdAndVisitDate(doctorId, userId, date);
+    public List<MedicalRecord> searchMedicalRecords(String doctorId, String userId, LocalDate date) {
+        if (date != null) {
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.plusDays(1).atStartOfDay();
+            return iMedicalRecordDao.findByDoctorDoctorIdAndUserUserIdAndVisitTimeBetween(
+                    doctorId, userId, start, end
+            );
+        }
+        return iMedicalRecordDao.findByDoctorDoctorIdAndUserUserId(doctorId, userId);
     }
     @Override
    public MedicalRecord getMedicalRecordById ( int medicalRecordId){
