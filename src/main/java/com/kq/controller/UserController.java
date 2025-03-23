@@ -34,11 +34,15 @@ public class UserController {//登录注册忘记密码，查看个人信息（�
     @PostMapping("/callModel")
     public String callModel(@RequestBody Map<String, Object> requestBody) {
         String prompt = (String) requestBody.get("prompt");
-        Integer max_length = (Integer) requestBody.get("max_length");
-        Double top_p = (Double) requestBody.get("top_p");
-        Double temperature = (Double) requestBody.get("temperature");
+        Number max_length_num = (Number) requestBody.get("max_length");
+        Number top_p_num = (Number) requestBody.get("top_p");
+        Number temperature_num = (Number) requestBody.get("temperature");
+        Integer max_length = max_length_num != null ? max_length_num.intValue() : 300;
+        Double top_p = top_p_num != null ? top_p_num.doubleValue() : 1.0;
+        Double temperature = temperature_num != null ? temperature_num.doubleValue() : 0.7;
+        String userId = (String) requestBody.get("userId");
         System.out.println(prompt);
-        return fastApiService.callModel(prompt, max_length, top_p, temperature);
+        return fastApiService.callModel(prompt, max_length, top_p, temperature,userId);
     }
 
     @PostMapping("/login")
