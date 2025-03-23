@@ -37,14 +37,23 @@ public class UserController {//登录注册忘记密码，查看个人信息（�
         Number max_length_num = (Number) requestBody.get("max_length");
         Number top_p_num = (Number) requestBody.get("top_p");
         Number temperature_num = (Number) requestBody.get("temperature");
-        Integer max_length = max_length_num != null ? max_length_num.intValue() : 300;
+        Integer max_length = max_length_num != null ? max_length_num.intValue() : 2048;
         Double top_p = top_p_num != null ? top_p_num.doubleValue() : 1.0;
         Double temperature = temperature_num != null ? temperature_num.doubleValue() : 0.7;
         String userId = (String) requestBody.get("userId");
         System.out.println(prompt);
         return fastApiService.callModel(prompt, max_length, top_p, temperature,userId);
     }
+    @PostMapping("/clearHistory")
+    public ResponseEntity<?> clearHistory(@RequestBody Map<String, Object> requestBody) {
+        String userId = (String) requestBody.get("userId");
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.badRequest().body("用户ID不能为空");
+        }
 
+        fastApiService.clearHistory(userId);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping("/login")
     String login(@RequestParam String userId, @RequestParam String pwd){
         return iUserService.login(userId,pwd)!=null? jwtTokenUtil.generateToken(userId) :null;
