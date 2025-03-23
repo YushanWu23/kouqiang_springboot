@@ -25,4 +25,16 @@ public class FastApiService {
 
         return response;
     }
+    public void clearHistory(String userId) {
+        String url = fastApiUrl + "/clearHistory";
+
+        // 构造请求体
+        String requestBody = String.format(
+                "{\"userId\": \"%s\"}",
+                userId
+        );
+
+        // 发送 POST 请求
+        restTemplate.postForObject(url, requestBody, String.class);
+    }
 }
